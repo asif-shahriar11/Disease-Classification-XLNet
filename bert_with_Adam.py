@@ -185,11 +185,11 @@ def eval_model(validation_loader, model, optimizer):
 # history = defaultdict(list)
 best_accuracy = 0
 
-# for epoch in range(1, EPOCHS+1):
-#     print(f'Epoch {epoch}/{EPOCHS}')
-#     model, train_acc, train_loss = train_model(train_data_loader, model, optimizer)
+for epoch in range(1, EPOCHS+1):
+    print(f'Epoch {epoch}/{EPOCHS}')
+    model, train_acc, train_loss = train_model(train_data_loader, model, optimizer)
 
-#     print(f'train_loss={train_loss:.4f}, train_acc={train_acc:.4f}')
+    print(f'train_loss={train_loss:.4f}, train_acc={train_acc:.4f}')
 
     # history['train_acc'].append(train_acc)
     # history['train_loss'].append(train_loss)
@@ -247,30 +247,30 @@ def get_predictions(model, data_loader):
 """
 
 
-example = test_df['File Contents'][0]
+# example = test_df['File Contents'][0]
 
-# print(example)
+# # print(example)
 
-# model.compile(optimizer=optimizer)
+# # model.compile(optimizer=optimizer)
 
-encodings = tokenizer.encode_plus(
-    example,
-    None,
-    add_special_tokens = True,
-    max_length = MAX_LEN,
-    truncation = True,
-    padding = "max_length", 
-    return_attention_mask = True, 
-    return_tensors = "pt"
-)
+# encodings = tokenizer.encode_plus(
+#     example,
+#     None,
+#     add_special_tokens = True,
+#     max_length = MAX_LEN,
+#     truncation = True,
+#     padding = "max_length", 
+#     return_attention_mask = True, 
+#     return_tensors = "pt"
+# )
 
-model.eval()
-with torch.no_grad():
-    ids = encodings['input_ids'].to(device, dtype = torch.long)
-    mask = encodings['attention_mask'].to(device, dtype = torch.long)
-    token_type_ids = encodings['token_type_ids'].to(device, dtype = torch.long)
-    # targets = encodings['targets'].to(device, dtype = torch.float)
-    outputs = model(ids, mask, token_type_ids)
-    print(outputs)
-    outputs = torch.sigmoid(outputs).cpu().detach().numpy().round()
-    print(outputs)
+# model.eval()
+# with torch.no_grad():
+#     ids = encodings['input_ids'].to(device, dtype = torch.long)
+#     mask = encodings['attention_mask'].to(device, dtype = torch.long)
+#     token_type_ids = encodings['token_type_ids'].to(device, dtype = torch.long)
+#     # targets = encodings['targets'].to(device, dtype = torch.float)
+#     outputs = model(ids, mask, token_type_ids)
+#     print(outputs)
+#     outputs = torch.sigmoid(outputs).cpu().detach().numpy().round()
+#     print(outputs)
