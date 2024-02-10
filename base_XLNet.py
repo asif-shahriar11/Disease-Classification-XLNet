@@ -172,17 +172,23 @@ def train_model(training_loader, model, optimizer):
 
 
 
-def eval_model(validation_loader, model):
+def eval_model(validation_loader, model, loss_fn):
     model.eval()
     final_targets = []
     final_outputs = []
+    losses = []
+
     with torch.no_grad():
         for data in validation_loader:
             ids = data['input_ids'].to(device, dtype=torch.long)
             mask = data['attention_mask'].to(device, dtype=torch.long)
             token_type_ids = data['token_type_ids'].to(device, dtype=torch.long)
             targets = data['targets'].to(device, dtype=torch.float)
+            
             outputs = model(ids, mask, token_type_ids)
+            loss = loss_fn(outputs, targets)
+            losses.append(loss.item())
+
             outputs = torch.sigmoid(outputs).cpu().detach().numpy()
             targets = targets.cpu().detach().numpy()
             final_outputs.extend(outputs)
@@ -195,13 +201,20 @@ def eval_model(validation_loader, model):
     precision = precision_score(final_targets, final_outputs, average='micro')
     recall = recall_score(final_targets, final_outputs, average='micro')
     hamming = hamming_loss(final_targets, final_outputs)
+    
+    average_loss = np.mean(losses)
+    
     print(f"Accuracy: {acc}")
     print(f"F1 Score: {f1}")
     print(f"Precision: {precision}")
     print(f"Recall: {recall}")
     print(f"Hamming Loss: {hamming}")
+    print(f"Average Loss: {average_loss}")
     # Detailed classification report
     print("\nClassification Report:\n", classification_report(final_targets, final_outputs, target_names=target_list))
+
+    return acc, average_loss
+
 
 
     # losses = []
@@ -241,7 +254,7 @@ def eval_model(validation_loader, model):
 # for epoch in range(1, EPOCHS+1):
 #     print(f'Epoch {epoch}/{EPOCHS}')
 #     model, train_acc, train_loss = train_model(train_data_loader, model, optimizer)
-#     eval_model(val_data_loader, model)
+#     val_acc, val_loss = eval_model(val_data_loader, model)
 
 #     history['train_acc'].append(train_acc)
 #     history['train_loss'].append(train_loss)
