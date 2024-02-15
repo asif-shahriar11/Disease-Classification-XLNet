@@ -82,7 +82,7 @@ best_f1 = 0
 
 for epoch in range(1, EPOCHS+1):
     print(f'Epoch {epoch}/{EPOCHS}')
-    model, train_acc, train_loss = train_model(train_data_loader, model, optimizer)
+    model, train_acc, train_loss = train_model(train_data_loader, model, optimizer, device, loss_fn)
     #val_acc, val_loss = evaluate_model(val_data_loader, model, optimizer)
     val_acc, val_f1, val_precision, val_recall, val_hamming_loss, val_loss = evaluate_model(val_data_loader, model, loss_fn, device, THRESHOLD, target_list)
 
