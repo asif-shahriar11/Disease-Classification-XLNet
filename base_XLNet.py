@@ -64,8 +64,10 @@ class CustomDataset(torch.utils.data.Dataset):
         }
     
 
-train_df = pd.read_csv('train_csv.csv')
-test_df = pd.read_csv('test_csv.csv')
+train_file = 'data/ohsumed/train.csv'
+test_file = 'data/ohsumed/test.csv'
+train_df = pd.read_csv(train_file)
+test_df = pd.read_csv(test_file)
 # split test into test and validation datasets
 train_df, val_df = train_test_split(train_df, random_state=88, test_size=0.30, shuffle=True)
 

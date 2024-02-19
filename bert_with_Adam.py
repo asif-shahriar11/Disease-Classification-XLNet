@@ -15,8 +15,10 @@ from sklearn.metrics import confusion_matrix, classification_report
 # model = BertModel.from_pretrained("bert-base-uncased")
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 
-train_df = pd.read_csv('train_csv.csv')
-test_df = pd.read_csv('test_csv.csv')
+train_file = 'data/ohsumed/train.csv'
+test_file = 'data/ohsumed/test.csv'
+train_df = pd.read_csv(train_file)
+test_df = pd.read_csv(test_file)
 
 
 # split test into test and validation datasets
