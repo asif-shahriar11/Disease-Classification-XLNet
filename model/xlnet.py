@@ -2,11 +2,11 @@ import torch.nn as nn
 from transformers import XLNetModel, XLNetTokenizer
 
 class XLNET(nn.Module):
-    def __init__(self):
+    def __init__(self, dropout=0.3, num_classes=23):
         super(XLNET, self).__init__()
         self.xlnet = XLNetModel.from_pretrained('xlnet-base-cased')
-        self.drop = nn.Dropout(0.3)
-        self.out = nn.Linear(768, 23)  # Assuming 23 classes for classification
+        self.drop = nn.Dropout(dropout)
+        self.out = nn.Linear(768, num_classes)
 
     def forward(self, input_ids, attention_mask, token_type_ids):
         # Get the full output
